@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清空数据</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>清空数据</h1>
+    <div id="status" class="status">准备清空数据...</div>
+    <script>
+        try {
+            // 获取所有以 bird_observation_ 开头的键
+            const keys = Object.keys(localStorage);
+            const birdKeys = keys.filter(key => key.startsWith('bird_observation_'));
+            
+            // 删除所有鸟类观测记录
+            birdKeys.forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            // 删除观测记录列表
+            localStorage.removeItem('bird_observations');
+            
+            document.getElementById('status').innerHTML = `
+                <p class="success">数据已成功清空！</p>
+                <p>已删除 ${birdKeys.length} 条观测记录</p>
+            `;
+        } catch (error) {
+            document.getElementById('status').innerHTML = `
+                <p class="error">清空数据时发生错误：</p>
+                <p>${error.message}</p>
+            `;
+        }
+    </script>
+</body>
+</html> 
